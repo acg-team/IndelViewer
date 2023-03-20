@@ -33,7 +33,7 @@
 
 # Python 3
 # Processing Tree file
-# Created by:  Gholamhossein Jowkar <jowk@zhaw.ch>
+# Created by: Gholamhossein Jowkar <jowk@zhaw.ch>
 # ACGT ZHAW
 # Created date: November 2022
 # Modified by: Gholamhossein Jowkar
@@ -46,7 +46,7 @@ import numpy as np
 from ete3 import Tree, PhyloTree, TreeStyle, NodeStyle, SeqGroup, faces, AttrFace, CircleFace
 
 
-class Tree:
+class IndelTree:
     def event_on_tree(self, tree, ins_event, del_event, dict_name_index, lst_child):
         """
         This function place the indel events on the tree.
@@ -123,4 +123,80 @@ class Tree:
         return lst_child
 
 
+class DrawTree(Tree):
+    def __init__(self, initializer, tr_style, selected_site_number):
+        # selected_site_number = 1188 #2546
+        ins_event = initializer.mat_insertion[selected_site_number, :]
+        del_event = initializer.mat_deletion[selected_site_number, :]
+        lst_child = IndelTree.get_father_subtree_of_node(self, initializer.tree)
+        # result = IndelTree.get_key_of_dict(self, 1, initializer.dict_name_index)
+        IndelTree.event_on_tree(self, initializer.tree, ins_event, del_event, initializer.dic_name_index, lst_child)
+        # print(child_lst)
+        # for n in tree.traverse():
+        #     print("The node %s is inserted: %s" %(n.name, n.is_inserted))
+        #     print("The node %s is deleted: %s" %(n.name, n.is_deleted))
+        #     print("The node %s is exist: %s" %(n.name, n.is_exist))
+
+        # tr_style = TreeStyle()
+        # tr_style.optimal_scale_level = 'full'
+        tr_style.extra_branch_line_type = 2
+        tr_style.extra_branch_line_color= 'Black'
+        tr_style.layout_fn = self.indel_view_layout
+        tr_style.show_leaf_name = False
+        # tree.render("%%inline",  tree_style=tr_style)
+
+    def indel_view_layout(self, node):
+        """
+        Handling the node style according to the indel point flags assign in the previous step.
+        See http://etetoolkit.org/docs/latest/tutorial/tutorial_drawing.html#layout-functions for more information.
+        :param node: The node of ete3 tree.
+        :return: None, but will set the style to the selected node.
+        """
+        if node.is_inserted:
+            # set bold red branch to the insertion node
+            ins_style = NodeStyle()
+            ins_style["fgcolor"] = "#0f0f0f"
+            ins_style["size"] = 0
+            ins_style["vt_line_color"] = "#ff0000"
+            ins_style["hz_line_color"] = "#ff0000"
+            ins_style["vt_line_width"] = 6
+            ins_style["hz_line_width"] = 6
+            ins_style["vt_line_type"] = 0  # 0:solid, 1:dashed, 2:dotted
+            ins_style["hz_line_type"] = 0
+            node.set_style(ins_style)
+            faces.add_face_to_node(faces.AttrFace("name", "Arial", 11, "#ff0000", None), node, 0)
+        elif node.is_deleted:
+            # set dashed black line to the deleted nodes
+            del_style = NodeStyle()
+            del_style["fgcolor"] = "#777777"
+            del_style["shape"] = "circle"
+            del_style["vt_line_color"] = "#777777"
+            del_style["hz_line_color"] = "#777777"
+            del_style["vt_line_width"] = 2
+            del_style["hz_line_width"] = 2
+            del_style["vt_line_type"] = 1  # 0:solid, 1:dashed, 2:dotted
+            del_style["hz_line_type"] = 1
+            node.set_style(del_style)
+            faces.add_face_to_node(faces.AttrFace("name", "Arial", 8, "#777777", None), node, 0)
+        elif (not node.is_exist) and (not node.is_deleted):
+            # set dotted black line to the node that does not exist
+            still_brth_style = NodeStyle()
+            still_brth_style["fgcolor"] = "#777777"
+            still_brth_style["vt_line_color"] = "#777777"
+            still_brth_style["hz_line_color"] = "#777777"
+            still_brth_style["vt_line_width"] = 2
+            still_brth_style["hz_line_width"] = 2
+            still_brth_style["hz_line_type"] = 2
+            still_brth_style["vt_line_type"] = 2
+            node.set_style(still_brth_style)
+            faces.add_face_to_node(faces.AttrFace("name", "Arial", 8, "#777777", None), node, 0)
+        else:
+            node.img_style["fgcolor"] = "#0f0f0f"
+            node.img_style["vt_line_color"] = "#0f0f0f"
+            node.img_style["hz_line_color"] = "#0f0f0f"
+            node.img_style["vt_line_width"] = 2
+            node.img_style["hz_line_width"] = 2
+            node.img_style["hz_line_type"] = 0
+            node.img_style["vt_line_type"] = 0
+            faces.add_face_to_node(faces.AttrFace("name", "Arial", 8, "#0f0f0f", None), node, 0)
 
