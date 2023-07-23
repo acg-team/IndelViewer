@@ -18,6 +18,13 @@ pip install arpip_indel_viewer
 ### Usage
 Using a phylogenetic tree, the user can visualize the indel points in the tree. The user can also visualize the indel points in the tree using the command line.
 
+for run the application use this command:
+
+```console
+python ./main.py
+```
+
+for print a single site tree with indel points use this command:
 ```console
 python ./_cli.py --single-result 102  ./input.txt
 ```
