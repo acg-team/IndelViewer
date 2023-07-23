@@ -21,7 +21,7 @@ Using a phylogenetic tree, the user can visualize the indel points in the tree. 
 for run the application use this command:
 
 ```console
-python ./main.py
+python ./main.py ./input.txt
 ```
 
 for print a single site tree with indel points use this command:
