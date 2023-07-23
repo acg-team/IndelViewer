@@ -1,0 +1,4 @@
+fasta=./sample/prank_phyml_OMAGroup_1003884.fa.best.arpipasr.fasta
+relation=./sample/prank_phyml_OMAGroup_1003884.fa.best.arpipnode_rel.txt
+tree=./sample/prank_phyml_OMAGroup_1003884.fa.best.arpiptree.nwk
+indel=./sample/prank_phyml_OMAGroup_1003884.fa.best.arpipindel.txt
