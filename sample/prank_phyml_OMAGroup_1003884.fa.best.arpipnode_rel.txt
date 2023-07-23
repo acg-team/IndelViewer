@@ -1,0 +1,12 @@
+Name 	 Parent 	 Child 
+Mus	V2
+Rattus	V2
+V2	root	Mus	Rattus
+Pan	V5
+Homo	V5
+V5	V7	Pan	Homo
+Gorilla	V7
+V7	V9	V5	Gorilla
+Macaca	V9
+V9	root	V7	Macaca
+root	--	V2	V9
