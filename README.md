@@ -30,7 +30,7 @@ python ./_cli.py  ./input.txt
 
 for help use this command:
 
-```consolehelp
+```console
 python ./_cli.py —help
 ```
 
