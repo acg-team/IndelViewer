@@ -154,3 +154,27 @@ class AlignmentUtils:
                 c_counter += 1
             r_counter += 1
         return list(set(gappy_col))
+
+    # @njit it is possible to run this function with numba
+    @staticmethod
+    def get_miss_match(np_inferred_alignment, np_ref_alignment):
+        """
+        The total number of inferred characters similarly, excluding gaps, divided by the total number of characters
+        :param np_inferred_alignment:
+        :param np_ref_alignment:
+        :return:
+        """
+        lst_mis_match_lin = []
+        total_sub_lin = np.count_nonzero((np_ref_alignment != 0) & (np_ref_alignment != -1), axis=1)
+        mis_match_lin = 0
+        mis_match = 0
+        total_sub = np.count_nonzero((np_ref_alignment != 0) & (np_ref_alignment != -1))
+        for i in range(np_inferred_alignment.shape[0]):
+            mis_match_lin = 0
+            for j in range(np_inferred_alignment.shape[1]):
+                if np_ref_alignment[i, j] != 0 and np_ref_alignment[i, j] != -1 and np_inferred_alignment[i, j] != np_ref_alignment[i, j]:
+                    mis_match += 1
+                    mis_match_lin += 1
+            lst_mis_match_lin.append(mis_match_lin)
+        result = [x/y for x, y in zip(lst_mis_match_lin, total_sub_lin)]
+        return total_sub, mis_match, 1 - (mis_match/total_sub)
