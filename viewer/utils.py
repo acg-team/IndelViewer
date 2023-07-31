@@ -53,30 +53,48 @@ class TreeUtils:
         self.tree = tree
         self.dict_relation = dict_relation
 
-    def get_all_distances_to_root(self, dict_distances_to_root=None):
+    def get_all_distances_to_root(self):
+        """
+        Get the distance of each node to the root of the tree
+        :return:
+        """
         for node in self.tree.traverse('postorder'):
             if node not in self.tree.iter_leaves():
                 a = node.children[0]
                 node.name = self.dict_relation.get(a.name)
-            dict_distances_to_root[node.name] = self.tree.get_distance(node.name)
+            self.dict_distances_to_root[node.name] = self.tree.get_distance(node.name)
+        return self.dict_distances_to_root
 
     @staticmethod
     def get_relationship_nodes(relation_lines):
+        """
+        Extract the relationship between nodes from the relation file
+        :param relation_lines: Lines containing the relationship between nodes from ARPIP output
+        :return: dictionary of nodes and their parents (kid:father)
+        """
         dict_node_relationship = {}
         for line in relation_lines[1:-1]:
             s = line.split('\t')
             dict_node_relationship[s[0]] = s[1].strip()
-        print("Relation file (kid:father)", dict_node_relationship)
         return dict_node_relationship
 
-    def get_total_tree_length(self):
+    def compute_total_tree_length(self):
+        """
+        Compute the total tree length
+        :return None
+        """
         for node in self.tree.traverse('postorder'):
             self.total_tree_length += node.dist
+
     def print_relationship_nodes(self):
+        """
+        Print the relationship between nodes
+        :return None
+        """
         if self.dict_relation:
             print("Relation file (kid:father)", self.dict_relation)
         else:
-            print("No relation file is provided, please run the get_relationship_nodes method first")
+            print("No relation file is provided, please run the get_relationship_nodes method first.")
 
 
 
@@ -85,13 +103,18 @@ class AlignmentUtils:
     def __init__(self, alignment):
         self.alignment = alignment
 
-    def get_all_alignment_lengths(self, with_gap=False, dict_alignment_lengths=None):
+    def get_all_alignment_lengths(self, with_gap=False):
+        """
+        Compute the length of each sequence in the alignment
+        :param with_gap: to consider the gap characters in the sequence or not
+        :return: dictionary of sequence ids and their lengths
+        """
         for record in self.alignment:
             if with_gap:
-                dict_alignment_lengths[record.id] = len(record.seq)
+                self.dict_alignment_lengths[record.id] = len(record.seq)
             else:
-                dict_alignment_lengths[record.id] = len(record.seq.ungap('-'))
-        return dict_alignment_lengths
+                self.dict_alignment_lengths[record.id] = len(record.seq.ungap('-'))
+        return self.dict_alignment_lengths
 
     def split_multiple_ancestral_alignment(self, asr_pref="V"):
         """
