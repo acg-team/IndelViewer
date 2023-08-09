@@ -178,3 +178,23 @@ class AlignmentUtils:
             lst_mis_match_lin.append(mis_match_lin)
         result = [x/y for x, y in zip(lst_mis_match_lin, total_sub_lin)]
         return total_sub, mis_match, 1 - (mis_match/total_sub)
+
+    @staticmethod
+    def convert_fasta_to_phylip(fasta_aln_path, phylip_aln_path):
+        """
+        Convert fasta alignment file to phylip format
+        :param fasta_aln_path: path and name of to fasta alignment file
+        :param phylip_aln_path: path and name of phylip alignment file
+        :return: None
+        """
+        AlignIO.convert(fasta_aln_path, "fasta", phylip_aln_path, "phylip-relaxed")
+
+    @staticmethod
+    def convert_phylip_to_fasta(phylip_aln_path, fasta_aln_path):
+        """
+        Convert phylip alignment file to fasta format
+        :param phylip_aln_path:
+        :param fasta_aln_path:
+        :return: None
+        """
+        AlignIO.convert(phylip_aln_path, "phylip-relaxed", fasta_aln_path, "fasta")
