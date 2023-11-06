@@ -193,7 +193,7 @@ def main(args=None):
     seq_pn.object = Helper.view_alignment(initializer.aligned_data, initializer.df_event, update_selected_site_number,
                                           molecule_type='AA', plot_width=600)
 
-    # create widget tool to select the coloumn
+    # create widget tool to select the column
     site_slider = pn.widgets.IntSlider(name="value", start=1, end=initializer.seq_len, value=1, width=500)
 
     # bottom
