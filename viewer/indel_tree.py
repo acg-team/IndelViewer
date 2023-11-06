@@ -36,6 +36,8 @@
 
 __all__ = ['IndelTree']
 
+import logging
+
 import numpy as np
 from ete3 import Tree, TreeStyle, NodeStyle, faces, AttrFace, CircleFace
 
@@ -109,7 +111,7 @@ class DrawTree(IndelTree):
         child_lst = IndelTree.father_subtree_node(self, initializer.tree)
         result = IndelTree.get_key_dic(self, 1, initializer.dic_name_index)
         IndelTree.event_on_tree(self, initializer.tree, ins_event, del_event, initializer.dic_name_index, child_lst)
-        # print(child_lst)
+        logging.debug("[DrawTree:__init__] %s", child_lst)
         # for n in tree.traverse():
         #     print("The node %s is inserted: %s" %(n.name, n.is_inserted))
         #     print("The node %s is deleted: %s" %(n.name, n.is_deleted))
