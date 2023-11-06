@@ -228,7 +228,7 @@ def main(args=None):
          )
     )
 
-    app.show()  # html page
+    app.show(title="Indel Viewer")  # html page
     # app  # inline
 
 
