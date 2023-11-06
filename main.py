@@ -41,7 +41,7 @@ from viewer.indel_tree import DrawTree
 from viewer.plotting_events import PlottingEvents
 from viewer.helper import *
 # from tree import DrawTree
-import os, io, random
+import os, io, random, datetime, argparse, pathlib
 import string
 import numpy as np
 import pandas as pd
@@ -54,6 +54,7 @@ from Bio import AlignIO, SeqIO, Seq
 # from panel
 import panel as pn
 import panel.widgets as pnw
+from panel.widgets import Tqdm
 pn.extension()
 
 # from Bokeh
@@ -66,7 +67,7 @@ from bokeh.layouts import gridplot, column, row
 
 # form ETE3
 from ete3 import Tree, PhyloTree, TreeStyle, NodeStyle, SeqGroup
-from panel.widgets import Tqdm
+
 
 class Initializer:
 
@@ -121,8 +122,16 @@ class Initializer:
 selected_site_number = 2546
 
 def main(args=None):
+
+    # Configure logging settings
+    logging.basicConfig(filename='indel_view.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+    # Configure logging settings for both console and file handlers
+    # logger = logging.getLogger('')
+    # logger.setLevel(logging.DEBUG)
+
     ts = TreeStyle()
     initializer = Initializer()
+    logging.info("[Main] The input files are read successfully.")
 
     DrawTree(ts, initializer, selected_site_number)
     tree_panel = pn.pane.image.PNG(initializer.tree.render("%%inline", tree_style=ts), height=300)
