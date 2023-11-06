@@ -1,26 +1,33 @@
 ![Tux, the Indelviewer mascot](./docs/icons/indelViewer%20logo.jpg)
 
-# Indel Points Visualization
+# ARPIP's Indel Visualizer
 
-This repo contains an implementation of the `arpip indel viewer` which help the user to visualize the indel points in the phylogenetic tree. 
+This repository contains the implementation of the `arpip indel viewer` which help the user to visualize the indel points
+inferred by ARPIP in the phylogenetic tree. 
 
 ## Getting Started
+Before installation make sure that you have the Python version 3.8 or higher installed on your system. 
+[Need help?](https://realpython.com/installing-python/)
 
 ### Installation
-To install the package you can do any of the following:
 
-Simply download the repository and run the following command in the root directory:
+To install the package you can simply download the repository and run the following command in the root directory.
+
+Install the dependencies using this command:
+
+```console
+pip3 install -r requirements.txt
+```
 
 ### Usage
-Using a phylogenetic tree, the user can visualize the indel points in the tree. The user can also visualize the indel points in the tree using the command line.
-
-for run the application use this command:
+The user can run the visualizer using the command line. For running the application use this command:
 
 ```console
 python ./main.py ./input.txt
 ```
 
-for print a single site tree with indel points use this command:
+To print a single site tree with indel points use this command:
+
 ```console
 python ./_cli.py --single-result 102  ./input.txt
 ```
