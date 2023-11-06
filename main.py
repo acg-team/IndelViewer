@@ -70,14 +70,50 @@ from ete3 import Tree, PhyloTree, TreeStyle, NodeStyle, SeqGroup
 
 
 class Initializer:
+    parser = argparse.ArgumentParser(description='Indel Viewer')
+    parser.add_argument('input_file', type=str, help='Path to the input file')
+    parser.add_argument('--verbose', '-v', action='store_true', default=0, help='Verbosity level')
+    # parser.add_argument('path', type=pathlib.Path)
 
-    path = './sample/'
-    files_path = {
-        'fasta': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpipasr.fasta',
-        'relation': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpipnode_rel.txt',
-        'tree': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpiptree.nwk',
-        'indel': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpipindel.txt'
-    }
+    parsed_args = parser.parse_args()
+
+    verbose = parsed_args.verbose
+
+    with open(parsed_args.input_file) as file:
+        dict_input_file = {}
+        for line in file:
+            key, value = line.rstrip().split('=', 1)
+            dict_input_file[key] = value
+
+        necessary_keys = ['fasta', 'relation', 'tree', 'indel']
+        input_file_keys = list(dict_input_file.keys())
+        # logging.info("The existing file extensions:%s", dict_input_file)
+        # for key, value in dict_input_file.items():
+        #     logging.INFO(f"{key}: {value}")
+
+        if len(necessary_keys) == len(input_file_keys):
+            if (dict_input_file['fasta'].split('.', -1)[-1] == 'fasta' and
+                    dict_input_file['relation'].split('.', -1)[-1] == 'txt' and
+                    dict_input_file['tree'].split('.', -1)[-1] == 'nwk' and
+                    dict_input_file['indel'].split('.', -1)[-1] == 'txt'):
+                files_path = dict_input_file
+            else:
+                logging.error("[Main:Initializer] The input text file is incorrect")
+        else:
+            logging.error("[Main:Initializer] There should be four files with different formats.")
+            print("Input text file is incorrect, the sample file is running instead")
+            logging.warning("[Main:Initializer]Input text file is incorrect, the sample file is running instead")
+            path = './sample/'
+            files_path = {
+                'fasta': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpipasr.fasta',
+                'relation': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpipnode_rel.txt',
+                'tree': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpiptree.nwk',
+                'indel': './sample/prank_phyml_OMAGroup_1003884.fa.best.arpipindel.txt'
+            }
+
+        if verbose:
+            print("Verbose mode is enabled")
+
     def __init__(self, files_path=files_path):
 
         self.file_input_fasta = pn.widgets.FileInput(accept='.fasta')
