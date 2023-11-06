@@ -6,7 +6,7 @@
 ########################################################################################################################
 #
 # This file is part of arpip_indel_viewer of ARPIP project: https://github.com/acg-team/IndelViewer
-
+#
 #                           ABOUT THE ARPIP PACKAGE
 #                           =====================
 # ARPIP: Ancestral Sequence Reconstruction with insertions and deletions under the Poisson Indel Process
@@ -38,7 +38,7 @@
 
 # from ete3 import (PhyloTree, TreeStyle, NodeStyle, SeqGroup, TextFace, AttrFace, SequenceFace)
 from ete3 import (NodeStyle, SeqGroup)
-import os, sys, os.path
+import os, sys, os.path, logging
 from IPython.display import Image
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
@@ -59,9 +59,9 @@ class PlottingEvents(IndelTree):
             if node not in tr.iter_leaves():
                 a = node.children[0]
                 node.name = initializer.dic_relation.get(a.name)
-                # print("The list of internal nodes:", node.name)
+                logging.debug("[Plotting events:__init__] The list of internal nodes: %s", node.name)
             initializer.list_names.append(node.name)
-        # print("The list of all nodes:", initializer.list_names)
+        logging.debug("[Plotting events:__init__] The list of all nodes: %s", initializer.list_names)
 
         align_fas = format(initializer.aligned_data, 'fasta')
 
@@ -76,13 +76,13 @@ class PlottingEvents(IndelTree):
         if not (os.path.isdir(path_w_dir)):
             try:
                 os.mkdir(path_w_dir)
-                print("Directory '% s' is created" % directory)
+                logging.info("[Plotting events:__init__] Directory '% s' is created", directory)
             except OSError as error:
-                print(error)
+                logging.error("[Plotting events:__init__] with error %s", error)
             else:
-                print("Successfully created the directory %s " % path_w_dir)
+                logging.info("[Plotting events:__init__] Successfully created the directory %s ", path_w_dir)
         else:
-            print("The directory is already exists.")
+            logging.info("[Plotting events:__init__] The directory is already exists.")
 
         os.chdir(path_w_dir)
 
@@ -90,7 +90,7 @@ class PlottingEvents(IndelTree):
         self.render_site(site_number, self.tr, self.initializer.aligned_data, self.initializer.mat_insertion,
                          self.initializer.mat_deletion, self.initializer.dic_name_index)
 
-        print("Successfully change the directory back to %s " % self.path)
+        logging.info("[Plotting events:print_selected_site] Successfully change the directory back to %s ", self.path)
         os.chdir(self.path)
 
     def print_all_sites(self):
@@ -98,7 +98,7 @@ class PlottingEvents(IndelTree):
                               self.initializer.mat_deletion, self.initializer.dic_name_index,
                               self.tqdm)  # all the sites in the msa file
 
-        print("Successfully change the directory back to %s " % self.path)
+        logging.info("[Plotting events:print_all_sites] Successfully change the directory back to %s ", self.path)
         os.chdir(self.path)
 
     def link_to_align(self, tree, aln):
