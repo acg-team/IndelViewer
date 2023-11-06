@@ -116,21 +116,6 @@ class Initializer:
 
     def __init__(self, files_path=files_path):
 
-        self.file_input_fasta = pn.widgets.FileInput(accept='.fasta')
-        self.file_input_arpipnode_rel_txt = pn.widgets.FileInput(accept='.txt')
-        self.file_input_nwk = pn.widgets.FileInput(accept='.nwk')
-        self.file_input_arpipindel_txt = pn.widgets.FileInput(accept='.txt')
-
-        self.apps = pn.Column(
-            pn.Column(pn.pane.Markdown('## Indel Viewer fasta Input'), self.file_input_fasta),
-            pn.Column(pn.pane.Markdown('## Indel Viewer arpipindel_rel Input'), self.file_input_arpipnode_rel_txt),
-            pn.Column(pn.pane.Markdown('## Indel Viewer nwk Input'), self.file_input_nwk),
-            pn.Column(pn.pane.Markdown('## Indel Viewer arpipindel Input'), self.file_input_arpipindel_txt),
-        )
-
-
-
-
         self.aligned_data = AlignIO.read(f"{files_path['fasta']}", 'fasta')
         self.seq_len = self.aligned_data.get_alignment_length()
 
@@ -210,36 +195,36 @@ def main(args=None):
 
     # create widget tool to select the coloumn
     site_slider = pn.widgets.IntSlider(name="value", start=1, end=initializer.seq_len, value=1, width=500)
-    file_input_fasta = pn.widgets.FileInput(accept='.fasta')
+
     # bottom
     app = pn.Tabs(
         # ('Import Files', initializer.apps),
 
-        ('Work View',
-         pn.Column(
-             pn.Row(tree_panel, seq_pn),
+        ('Result View',
              pn.Column(
-                 pn.Row(
-                     pn.pane.Markdown('## Indel Viewer'),
-                 ),
-                 pn.layout.Divider(margin=(-20, 0, 0, 0)),
-                 pn.Row(
-                     pn.Column(
-                         pn.Row(
-                             "Simple example."),
-                         pn.Row(indel_view_btn)
+                 pn.Row(tree_panel, seq_pn),
+                 pn.Column(
+                     pn.Row(
+                         pn.pane.Markdown('## ARPIP Indel Viewer'),
                      ),
+                     pn.layout.Divider(margin=(-20, 0, 0, 0)),
+                     pn.Row(
+                         pn.Column(
+                             pn.Row(
+                                 "Show the scenario:"),
+                             pn.Row(indel_view_btn)
+                         ),
 
-                     pn.Column(
-                         pn.Row(
-                             "Adjust the hyperparameters:"),
-                         pn.Row(indel_view_btn_plotting),
-                         pn.Row(tqdm)
+                         pn.Column(
+                             pn.Row(
+                                 "Print all the scenarios:"),
+                             pn.Row(indel_view_btn_plotting),
+                             pn.Row(tqdm)
+                         ),
                      ),
-                 ),
-                 styles=dict(background='WhiteSmoke', width='320'),
+                     # styles=dict(background='WhiteSmoke', width='320'),
+                 )
              )
-         )
          )
     )
 
