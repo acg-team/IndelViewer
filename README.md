@@ -1,19 +1,15 @@
+![Tux, the Indelviewer mascot](./docs/icons/indelViewer%20logo.jpg)
+
 # Indel Points Visualization
 
 This repo contains an implementation of the `arpip indel viewer` which help the user to visualize the indel points in the phylogenetic tree. 
-
-## Contributing
-If you want to contribute to this repo simply submit a pull request!
 
 ## Getting Started
 
 ### Installation
 To install the package you can do any of the following:
 
-- Run the command 
-```bash
-pip install arpip_indel_viewer
-```
+Simply download the repository and run the following command in the root directory:
 
 ### Usage
 Using a phylogenetic tree, the user can visualize the indel points in the tree. The user can also visualize the indel points in the tree using the command line.
@@ -46,5 +42,9 @@ python ./_cli.py —help
 which can be located [here](https://academic.oup.com/sysbio/advance-article/doi/10.1093/sysbio/syac050/6648472).
 
 
+## Contributing
+If you want to contribute to this repo simply submit a pull request!
+
+
 ## Author
-Gholom-Hossein Jowkar [E-mail](jowk@zhaw.ch)
+Gholam-Hossein Jowkar [E-mail](jowk@zhaw.ch)
