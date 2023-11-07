@@ -154,16 +154,19 @@ def main(args=None):
     initializer = Initializer()
     logging.info("[Main] The input files are read successfully.")
 
+    # To make the panel's size more compatible
+    tree_height = len(initializer.aligned_data) * 9 + 50
+
     DrawTree(ts, initializer, selected_site_number)
-    tree_panel = pn.pane.image.PNG(initializer.tree.render("%%inline", tree_style=ts), height=300)
-    tree_result = pn.pane.image.PNG(name='empty', height=600)
+    tree_panel = pn.pane.image.PNG(initializer.tree.render("%%inline", tree_style=ts), height=tree_height, width=750) #height_policy='max'
+    tree_result = pn.pane.image.PNG(name='empty', height=tree_height)
 
     def update_graph(event):
         global tree_panel, tree_result, ts
         ts = TreeStyle()
         DrawTree(ts, initializer, selected_site_number)
-        tree_panel = pn.pane.image.PNG(initializer.tree.render("%%inline", tree_style=ts), height=300)
-        tree_result = pn.pane.image.PNG(name='empty', height=600)
+        tree_panel = pn.pane.image.PNG(initializer.tree.render("%%inline", tree_style=ts), height=tree_height, width=750)
+        tree_result = pn.pane.image.PNG(name='empty', height=tree_height, sizing_mode='stretch_both')
 
         app[0][0][0] = tree_panel
 
@@ -178,20 +181,22 @@ def main(args=None):
     tqdm = Tqdm(width=280)
 
     def generate_plotting_events(event):
-        plottingTree = PhyloTree('./sample/prank_phyml_OMAGroup_1003884.fa.best.arpiptree.nwk', alg_format='fasta',
-                                 format=1)
+        plottingTree = PhyloTree(initializer.files_path['tree'], alg_format='fasta', format=1)
+
         plottingEvents = PlottingEvents(plottingTree, initializer, tqdm)
         plottingEvents.print_all_sites()
 
+
+    # plotting all events
     indel_view_btn_plotting = pn.widgets.Button(name='Plotting All Events', width=200, button_type='primary')
 
     # watch associates a button click with the update function
     indel_view_btn_plotting.param.watch(generate_plotting_events, 'clicks')
 
     # viewing the alignment
-    seq_pn = pn.pane.Bokeh(name='align', height=300)
+    seq_pn = pn.pane.Bokeh(name='align', height=300, width=700)
     seq_pn.object = Helper.view_alignment(initializer.aligned_data, initializer.df_event, update_selected_site_number,
-                                          molecule_type='AA', plot_width=600)
+                                          molecule_type='AA', plot_width=700)
 
     # create widget tool to select the column
     site_slider = pn.widgets.IntSlider(name="value", start=1, end=initializer.seq_len, value=1, width=500)
