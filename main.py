@@ -129,9 +129,9 @@ class Initializer:
 
         self.list_names = []
         for node in self.tree.traverse("postorder"):
-            if node not in self.tree.iter_leaves():
-                a = node.children[0]
-                node.name = self.dic_relation.get(a.name)
+            # if node not in self.tree.iter_leaves():
+            #     a = node.children[0]
+            #     node.name = self.dic_relation.get(a.name)
             self.list_names.append(node.name)
 
         events = Helper.read_input_file(files_path['indel'])
