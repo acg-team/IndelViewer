@@ -140,7 +140,7 @@ class Initializer:
 
 
 # The main panel
-selected_site_number = 2546
+selected_site_number = 0
 
 def main(args=None):
 
